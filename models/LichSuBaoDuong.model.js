@@ -28,11 +28,11 @@ const LichSuBaoDuong = sequelize.define(
     },
 
     TG_BD: {
-      type: Date,
+      type: DataTypes.DATE,
     },
 
     TG_KT: {
-      type: Date,
+      type: DataTypes.DATE,
     },
     DanhGia: {
       type: DataTypes.STRING,

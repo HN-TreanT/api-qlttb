@@ -1,11 +1,11 @@
 const config = {
   api: {
-    port: 8000,
+    port: 8080,
   },
   database: {
     username: "admin",
     password: "hnam23012002",
-    database: "movieDb",
+    database: "qlttb",
     port: 3306, // thay đổi port kết nối tới MySQL từ 8080 thành 3307
     host: "localhost",
     dialect: "mysql",

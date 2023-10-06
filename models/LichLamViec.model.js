@@ -14,7 +14,7 @@ const LichLamViec = sequelize.define(
       allowNull: false,
       references: {
         model: "CanBo",
-        key: "MaCB",
+        key: "Ma_CB",
       },
     },
 
