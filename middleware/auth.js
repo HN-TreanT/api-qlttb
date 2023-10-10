@@ -1,22 +1,23 @@
 const security = require("../utils/security");
-
+const { responseServerError, responseUnthorized, reponseForbidden } = require("../helper/ResponseRequests");
 const requireLogin = (req, res, next) => {
   try {
-    const headerAuthorized = req.headers.authorization.split(" ")[1];
-    if (!headerAuthorized) {
-      res.status(401).send("Unauthorized");
+    if (!req.headers.authorization) {
+      return responseUnthorized({ res });
     } else {
+      const headerAuthorized = req.headers.authorization.split(" ")[1];
+
       const decodedToken = security.verifyToken(headerAuthorized);
       if (decodedToken.user) {
         req.user = decodedToken.user;
         next();
       } else {
-        res.status(401).send("Unauthorized");
+        return responseUnthorized({ res });
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(401).send("Unauthorized");
+    return responseServerError({ res, err: error.message });
   }
 };
 
@@ -24,7 +25,7 @@ const requireRole = (...checkRole) => {
   return (req, res, next) => {
     if (req.user.role_id && checkRole.includes(req.user.role_id)) next();
     else {
-      res.status(403).send("Forbidden");
+      return reponseForbidden({ res });
     }
   };
 };

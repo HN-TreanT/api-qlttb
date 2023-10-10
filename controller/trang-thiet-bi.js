@@ -1,7 +1,14 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
+const { Op } = require("sequelize");
 const getAll = async (req, res) => {
-  const TrangThietBis = await db.TrangThietBi.findAll();
+  let filter = {};
+  if (req.query.Ten_TTB) filter.Ten_TTB = { [Op.substring]: req.query.Ten_TTB };
+
+  const TrangThietBis = await db.TrangThietBi.findAll({
+    where: { ...filter },
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: TrangThietBis });
 };
 

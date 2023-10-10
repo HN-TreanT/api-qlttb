@@ -1,7 +1,11 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
-  const LichSuCapNhats = await db.LichSuCapNhat.findAll();
+  let filter = {};
+  const LichSuCapNhats = await db.LichSuCapNhat.findAll({
+    where: { ...filter },
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: LichSuCapNhats });
 };
 

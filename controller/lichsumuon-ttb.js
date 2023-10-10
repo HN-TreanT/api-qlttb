@@ -1,7 +1,11 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
-  const LSM_TTBs = await db.LSM_TTB.findAll();
+  let filter = {};
+  const LSM_TTBs = await db.LSM_TTB.findAll({
+    where: { ...filter },
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: LSM_TTBs });
 };
 

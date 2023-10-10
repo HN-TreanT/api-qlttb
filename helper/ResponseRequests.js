@@ -27,9 +27,25 @@ const responseSuccessWithData = ({ res, data }) => {
   });
 };
 
+const responseUnthorized = ({ res }) => {
+  return res.status(401).json({
+    status: false,
+    message: "Unthorized",
+  });
+};
+
+const reponseForbidden = ({ res }) => {
+  return res.status(403).json({
+    status: false,
+    message: "Forbidden",
+  });
+};
+
 module.exports = {
   reponseSuccess,
   responseInValid,
   responseServerError,
   responseSuccessWithData,
+  responseUnthorized,
+  reponseForbidden,
 };

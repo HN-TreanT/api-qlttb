@@ -1,7 +1,18 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
+const { Op } = require("sequelize");
 const getAll = async (req, res) => {
-  const LichHocs = await db.LichHoc.findAll();
+  let filter = {};
+  let order = [];
+  if (req.query.ten_lop) filter.Lop = { [Op.substring]: req.query.ten_lop };
+  if (req.query.phong_hoc) filter.PhongHoc = { [Op.substring]: req.query.phong_hoc };
+  if (req.query.order_ngayhoc) order = [...order, ["NgayHoc", `${req.query.order_ngayhoc}`]];
+  if (req.query.order_TG_BD) order = [...order, ["TG_BD", `${req.query.order_TG_BD}`]];
+  const LichHocs = await db.LichHoc.findAll({
+    where: { ...filter },
+    order: [...order],
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: LichHocs });
 };
 
@@ -12,15 +23,15 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  await db.LichHoc.create(req.body);
-  return reponseSuccess({ res });
+  const data = await db.LichHoc.create(req.body);
+  return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
   if (!LichHoc) return responseInValid({ res, message: "not found can bo" });
   await LichHoc.update(req.body);
-  return reponseSuccess({ res });
+  return responseSuccessWithData({ res, data: LichHoc });
 };
 
 const deleteById = async (req, res) => {

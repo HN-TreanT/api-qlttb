@@ -1,31 +1,39 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
-  const LichLamViecs = await db.LichLamViec.findAll();
+  let filter = {};
+  let order = [];
+  if (req.query.Ma_CB) filter.Ma_CB = req.query.Ma_CB;
+  if (req.query.order_ngay) order = [...order, ["Ngay", `${req.query.order_ngay}`]];
+  const LichLamViecs = await db.LichLamViec.findAll({
+    where: { ...filter },
+    order: [...order],
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: LichLamViecs });
 };
 
 const getById = async (req, res) => {
   const LichLamViec = await db.LichLamViec.findByPk(req.params.id);
-  if (!LichLamViec) return responseInValid({ res, message: "not found can bo" });
+  if (!LichLamViec) return responseInValid({ res, message: "Không tìm thấy lịch làm việc" });
   return responseSuccessWithData({ res, data: LichLamViec });
 };
 
 const create = async (req, res) => {
-  await db.LichLamViec.create(req.body);
-  return reponseSuccess({ res });
+  const data = await db.LichLamViec.create(req.body);
+  return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {
   const LichLamViec = await db.LichLamViec.findByPk(req.params.id);
-  if (!LichLamViec) return responseInValid({ res, message: "not found can bo" });
+  if (!LichLamViec) return responseInValid({ res, message: "Không tìm thấy lịch làm việc" });
   await LichLamViec.update(req.body);
-  return reponseSuccess({ res });
+  return responseSuccessWithData({ res, data: LichLamViec });
 };
 
 const deleteById = async (req, res) => {
   const LichLamViec = await db.LichLamViec.findByPk(req.params.id);
-  if (!LichLamViec) return responseInValid({ res, message: "not found can bo" });
+  if (!LichLamViec) return responseInValid({ res, message: "Không tìm thấy lịch làm việc" });
   await LichLamViec.destroy();
   return reponseSuccess({ res });
 };

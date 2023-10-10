@@ -1,7 +1,11 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
-  const LichSuMuons = await db.LichSuMuon.findAll();
+  let filter = {};
+  const LichSuMuons = await db.LichSuMuon.findAll({
+    where: { ...filter },
+    ...req.pagination,
+  });
   return responseSuccessWithData({ res, data: LichSuMuons });
 };
 

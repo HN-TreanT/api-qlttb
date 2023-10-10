@@ -12,6 +12,9 @@ const _LSM_TTB = require("./LSM_TTB.model");
 const _TinhTrangTTB = require("./TinhTrangTTB.model");
 const _TrangThietBi = require("./TrangThietBi.model");
 
+const _role = require("./Role.model");
+const Role = require("./Role.model");
+
 function initModels() {
   const CanBo = _CanBo;
   const LichBaoDuong = _LichBaoDuong;
@@ -25,17 +28,18 @@ function initModels() {
   const LSM_TTB = _LSM_TTB;
   const TinhTrangTTB = _TinhTrangTTB;
   const TrangThietBi = _TrangThietBi;
+  const role = _role;
 
   CanBo.hasMany(LichSuBaoDuong, { as: "LichSuBaoDuong", foreignKey: "Ma_CB" });
   LichSuBaoDuong.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
 
-  CanBo.hasMany(LichLamViec, { as: "LichLamViec ", foreignKey: "Ma_CB" });
+  CanBo.hasMany(LichLamViec, { as: "LichLamViec", foreignKey: "Ma_CB" });
   LichLamViec.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
 
-  CanBo.hasMany(LichSuMuon, { as: "LichSuMuon ", foreignKey: "Ma_CB" });
+  CanBo.hasMany(LichSuMuon, { as: "LichSuMuon", foreignKey: "Ma_CB" });
   LichSuMuon.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
 
-  CanBo.hasMany(LichSuCapNhat, { as: "LichSuCapNhat ", foreignKey: "Ma_CB" });
+  CanBo.hasMany(LichSuCapNhat, { as: "LichSuCapNhat", foreignKey: "Ma_CB" });
   LichSuCapNhat.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
 
   LichBaoDuong.hasMany(LichSuBaoDuong, { as: "LichSuBaoDuong", foreignKey: "Ma_LBD" });
@@ -64,6 +68,9 @@ function initModels() {
 
   LichHoc.hasMany(LichSuMuon, { as: "LichSuMuon", foreignKey: "Ma_LH" });
   LichSuMuon.belongsTo(LichHoc, { as: "LichHoc", foreignKey: "Ma_LH" });
+
+  role.hasMany(CanBo, { as: "CanBo", foreignKey: "role_id" });
+  CanBo.belongsTo(Role, { as: "Role", foreignKey: "role_id" });
   return {
     CanBo,
     TrangThietBi,
@@ -77,6 +84,7 @@ function initModels() {
     LS_TTB,
     LSM_TTB,
     TinhTrangTTB,
+    Role,
   };
 }
 const db = initModels();

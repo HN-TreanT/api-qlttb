@@ -9,6 +9,15 @@ const CanBo = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
+    TaiKhoan: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    MatKhau: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     Ten_CB: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -25,6 +34,20 @@ const CanBo = sequelize.define(
       type: DataTypes.TINYINT,
       defaultValue: 1,
     },
+
+    refresh_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    role_id: {
+      type: DataTypes.CHAR,
+      allowNull: false,
+      references: {
+        model: "Role",
+        key: "role_id",
+      },
+    },
   },
 
   {
@@ -37,6 +60,11 @@ const CanBo = sequelize.define(
         unique: true,
         using: "BTREE",
         fields: [{ name: "Ma_CB" }],
+      },
+      {
+        name: "can_bo_idfk_1",
+        using: "BTREE",
+        fields: [{ name: "role_id" }],
       },
     ],
   }
