@@ -14,6 +14,7 @@ const _TrangThietBi = require("./TrangThietBi.model");
 
 const _role = require("./Role.model");
 const Role = require("./Role.model");
+const _Loai_TTB = require("./Loai_TTB.model");
 
 function initModels() {
   const CanBo = _CanBo;
@@ -29,6 +30,7 @@ function initModels() {
   const TinhTrangTTB = _TinhTrangTTB;
   const TrangThietBi = _TrangThietBi;
   const role = _role;
+  const Loai_TTB = _Loai_TTB;
 
   CanBo.hasMany(LichSuBaoDuong, { as: "LichSuBaoDuong", foreignKey: "Ma_CB" });
   LichSuBaoDuong.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
@@ -71,6 +73,9 @@ function initModels() {
 
   role.hasMany(CanBo, { as: "CanBo", foreignKey: "role_id" });
   CanBo.belongsTo(Role, { as: "Role", foreignKey: "role_id" });
+
+  Loai_TTB.hasMany(TrangThietBi, { as: "TrangThietBi", foreignKey: "Ma_Loai_TTB" });
+  TrangThietBi.belongsTo(Loai_TTB, { as: "Loai_TTB", foreignKey: "Ma_Loai_TTB" });
   return {
     CanBo,
     TrangThietBi,
@@ -85,6 +90,7 @@ function initModels() {
     LSM_TTB,
     TinhTrangTTB,
     Role,
+    Loai_TTB,
   };
 }
 const db = initModels();

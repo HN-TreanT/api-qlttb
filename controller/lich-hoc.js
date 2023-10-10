@@ -8,12 +8,18 @@ const getAll = async (req, res) => {
   if (req.query.phong_hoc) filter.PhongHoc = { [Op.substring]: req.query.phong_hoc };
   if (req.query.order_ngayhoc) order = [...order, ["NgayHoc", `${req.query.order_ngayhoc}`]];
   if (req.query.order_TG_BD) order = [...order, ["TG_BD", `${req.query.order_TG_BD}`]];
-  const LichHocs = await db.LichHoc.findAll({
+  const { count, rows } = await db.LichHoc.findAndCountAll({
     where: { ...filter },
     order: [...order],
     ...req.pagination,
   });
-  return responseSuccessWithData({ res, data: LichHocs });
+  return responseSuccessWithData({
+    res,
+    data: {
+      count: count,
+      data: rows,
+    },
+  });
 };
 
 const getById = async (req, res) => {

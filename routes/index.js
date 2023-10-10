@@ -12,6 +12,7 @@ const lsm_ttbRoute = require("./lichsumuon-ttb.route");
 const lichhocRoute = require("./lich-hoc.route");
 const authRoute = require("./auth.route");
 const roleRoute = require("./role.route");
+const loai_ttbRoute = require("./loai_ttb.route");
 const route = (app) => {
   app.use("/api/can-bo", canboRoute);
   app.use("/api/lich-su-bao-duong", lsbdRoute);
@@ -27,5 +28,6 @@ const route = (app) => {
   app.use("/api/lich-hoc", lichhocRoute);
   app.use("/api/auth", authRoute);
   app.use("/api/role", roleRoute);
+  app.use("/api/loai-ttb", loai_ttbRoute);
 };
 module.exports = route;

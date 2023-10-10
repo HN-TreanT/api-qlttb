@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   if (req.query.order_name) order = [...order, ["Ten_CB", `${req.query.order_name}`]];
   if (req.query.order_createdAt) order = [...order, ["createdAt", `${req.query.order_createdAt}`]];
 
-  const canbos = await db.CanBo.findAll({
+  const { count, rows } = await db.CanBo.findAndCountAll({
     where: {
       ...filter,
     },
@@ -18,7 +18,13 @@ const getAll = async (req, res) => {
     ...req.pagination,
     include: [{ model: db.LichLamViec, as: "LichLamViec" }],
   });
-  return responseSuccessWithData({ res, data: canbos });
+  return responseSuccessWithData({
+    res,
+    data: {
+      count: count,
+      data: rows,
+    },
+  });
 };
 
 const getById = async (req, res) => {

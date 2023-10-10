@@ -2,11 +2,17 @@ const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
   let filter = {};
-  const TinhTrangTTBs = await db.TinhTrangTTB.findAll({
+  const { rows, count } = await db.TinhTrangTTB.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
   });
-  return responseSuccessWithData({ res, data: TinhTrangTTBs });
+  return responseSuccessWithData({
+    res,
+    data: {
+      count: count,
+      data: rows,
+    },
+  });
 };
 
 const getById = async (req, res) => {

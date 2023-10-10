@@ -2,13 +2,19 @@ const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
   let filter = {};
-  const LS_TTBs = await db.LS_TTB.findAll({
+  const { count, rows } = await db.LS_TTB.findAndCountAll({
     where: {
       ...filter,
     },
     ...req.pagination,
   });
-  return responseSuccessWithData({ res, data: LS_TTBs });
+  return responseSuccessWithData({
+    res,
+    data: {
+      count: count,
+      data: rows,
+    },
+  });
 };
 
 const getById = async (req, res) => {

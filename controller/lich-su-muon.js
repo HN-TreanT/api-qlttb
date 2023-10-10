@@ -24,7 +24,7 @@ const getAll = async (req, res) => {
   if (req.query.time_start && req.query.time_end) {
     filter.createdAt = { [Op.between]: [req.query.time_start, req.query.time_end] };
   }
-  const LichSuMuons = await db.LichSuMuon.findAll({
+  const { count, rows } = await db.LichSuMuon.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
     include: [
@@ -47,7 +47,7 @@ const getAll = async (req, res) => {
       },
     ],
   });
-  return responseSuccessWithData({ res, data: LichSuMuons });
+  return responseSuccessWithData({ res, data: { count: count, data: rows } });
 };
 
 const getById = async (req, res) => {
@@ -57,11 +57,11 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_lsm_ttb } = req.body;
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb } = req.body;
   const lsm = await db.LichSuMuon.create({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH });
   let lst_lsm_ttb = [];
-  if (lst_id_lsm_ttb) {
-    lst_lsm_ttb = lst_id_lsm_ttb.map((item) => {
+  if (lst_id_ttb) {
+    lst_lsm_ttb = lst_id_ttb.map((item) => {
       return {
         Ma_LSM: lsm.Ma_LSM,
         Ma_TTB: item,

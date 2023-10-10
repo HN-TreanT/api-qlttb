@@ -14,9 +14,13 @@ const TrangThietBi = sequelize.define(
       allowNull: true,
     },
 
-    Loai: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    Ma_Loai_TTB: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Loai_TTB",
+        key: "Ma_Loai_TTB",
+      },
     },
 
     NgayNhap: {
@@ -39,6 +43,11 @@ const TrangThietBi = sequelize.define(
         unique: true,
         using: "BTREE",
         fields: [{ name: "Ma_TTB" }],
+      },
+      {
+        name: "trang_thiet_bi_idfk_1",
+        using: "BTREE",
+        fields: [{ name: "Ma_Loai_TTB" }],
       },
     ],
   }

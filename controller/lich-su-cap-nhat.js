@@ -2,11 +2,17 @@ const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
   let filter = {};
-  const LichSuCapNhats = await db.LichSuCapNhat.findAll({
+  const { count, rows } = await db.LichSuCapNhat.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
   });
-  return responseSuccessWithData({ res, data: LichSuCapNhats });
+  return responseSuccessWithData({
+    res,
+    data: {
+      count: count,
+      data: rows,
+    },
+  });
 };
 
 const getById = async (req, res) => {
