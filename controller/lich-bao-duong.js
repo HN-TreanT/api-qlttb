@@ -5,6 +5,19 @@ const getAll = async (req, res) => {
   const { count, rows } = await db.LichBaoDuong.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
+    include: [
+      {
+        model: db.LichLamViec,
+        as: "LichLamViec",
+        include: [
+          {
+            model: db.CanBo,
+            as: "CanBo",
+            attributes: { exclude: ["MatKhau"] },
+          },
+        ],
+      },
+    ],
   });
   return responseSuccessWithData({
     res,
@@ -16,21 +29,35 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id);
+  const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id, {
+    include: [
+      {
+        model: db.LichLamViec,
+        as: "LichLamViec",
+        include: [
+          {
+            model: db.CanBo,
+            as: "CanBo",
+            attributes: { exclude: ["MatKhau"] },
+          },
+        ],
+      },
+    ],
+  });
   if (!LichBaoDuong) return responseInValid({ res, message: "not found can bo" });
   return responseSuccessWithData({ res, data: LichBaoDuong });
 };
 
 const create = async (req, res) => {
-  await db.LichBaoDuong.create(req.body);
-  return reponseSuccess({ res });
+  const data = await db.LichBaoDuong.create(req.body);
+  return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {
   const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id);
   if (!LichBaoDuong) return responseInValid({ res, message: "not found can bo" });
   await LichBaoDuong.update(req.body);
-  return reponseSuccess({ res });
+  return responseSuccessWithData({ res, data: LichBaoDuong });
 };
 
 const deleteById = async (req, res) => {

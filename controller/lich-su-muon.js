@@ -51,7 +51,27 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
+  const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id, {
+    include: [
+      { model: db.LichHoc, as: "LichHoc", where: { ...filterLichHoc } },
+      {
+        model: db.CanBo,
+        as: "CanBo",
+        where: { ...filterCanBo },
+      },
+      {
+        model: db.LSM_TTB,
+        as: "LSM_TTB",
+        include: [
+          {
+            model: db.TrangThietBi,
+            as: "TrangThietBi",
+            where: { ...filterThietBi },
+          },
+        ],
+      },
+    ],
+  });
   if (!LichSuMuon) return responseInValid({ res, message: "not found can bo" });
   return responseSuccessWithData({ res, data: LichSuMuon });
 };
@@ -78,8 +98,9 @@ const edit = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found can bo" });
   await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH });
+  let new_lst_lsm_ttb = [];
   if (lst_lsm_ttb) {
-    lst_lsm_ttb = lst_lsm_ttb.map((item) => {
+    new_lst_lsm_ttb = lst_lsm_ttb.map((item) => {
       return {
         ...item,
         Ma_LSM: LichSuMuon.Ma_LSM,
@@ -87,7 +108,7 @@ const edit = async (req, res) => {
     });
   }
   await db.LSM_TTB.destroy({ where: { Ma_LSM: LichSuMuon.Ma_LSM } });
-  await db.LSM_TTB.bulkCreate(lst_lsm_ttb);
+  await db.LSM_TTB.bulkCreate(new_lst_lsm_ttb);
   return responseSuccessWithData({ res, data: LichSuMuon });
 };
 
