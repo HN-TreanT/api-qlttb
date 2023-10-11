@@ -1,7 +1,15 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
+const { Op } = require("sequelize");
 const getAll = async (req, res) => {
+  const { DonVi, CongViec, Ten_CB } = req.query;
+
   let filter = {};
+  let filterLLV = {};
+  let filterCanBo = {};
+  if (DonVi) filter.DonVi = { [Op.substring]: DonVi };
+  if (CongViec) filterLLV.CongViec = { [Op.substring]: CongViec };
+  if (Ten_CB) filterCanBo.Ten_CB = { [Op.substring]: Ten_CB };
   const { count, rows } = await db.LichBaoDuong.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
@@ -9,11 +17,13 @@ const getAll = async (req, res) => {
       {
         model: db.LichLamViec,
         as: "LichLamViec",
+        where: { ...filterLLV },
         include: [
           {
             model: db.CanBo,
             as: "CanBo",
             attributes: { exclude: ["MatKhau"] },
+            where: { ...filterCanBo },
           },
         ],
       },
