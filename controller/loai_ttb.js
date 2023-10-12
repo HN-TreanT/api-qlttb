@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   return responseSuccessWithData({
     res,
     data: {
-      count: count,
+      count: rows.length,
       data: rows,
     },
   });

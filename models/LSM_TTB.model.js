@@ -34,6 +34,7 @@ const LichSuMuon_TrangThietBi = sequelize.define(
     NhanXet: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "",
     },
   },
 

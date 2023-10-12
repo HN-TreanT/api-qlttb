@@ -5,7 +5,6 @@ const getAll = async (req, res) => {
   let filter = {};
   let filterLichHoc = {};
   let filterCanBo = {};
-  let filterThietBi = {};
 
   if (req.query.ten_nguoi_muon) filter.NguoiMuon = { [Op.substring]: req.query.ten_nguoi_muon };
   if (req.query.so_dien_thoai) filter.SoDienThoai = req.query.so_dien_thoai;
@@ -19,11 +18,10 @@ const getAll = async (req, res) => {
     filterCanBo.Ten_CB = { [Op.substring]: req.query.Ten_CB };
   }
 
-  if (req.query.Ten_TTB) filterThietBi.Ten_TTB = { [Op.substring]: req.query.Ten_TTB };
-
   if (req.query.time_start && req.query.time_end) {
     filter.createdAt = { [Op.between]: [req.query.time_start, req.query.time_end] };
   }
+
   const { count, rows } = await db.LichSuMuon.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
@@ -41,23 +39,21 @@ const getAll = async (req, res) => {
           {
             model: db.TrangThietBi,
             as: "TrangThietBi",
-            where: { ...filterThietBi },
           },
         ],
       },
     ],
   });
-  return responseSuccessWithData({ res, data: { count: count, data: rows } });
+  return responseSuccessWithData({ res, data: { count: rows.length, data: rows } });
 };
 
 const getById = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id, {
     include: [
-      { model: db.LichHoc, as: "LichHoc", where: { ...filterLichHoc } },
+      { model: db.LichHoc, as: "LichHoc" },
       {
         model: db.CanBo,
         as: "CanBo",
-        where: { ...filterCanBo },
       },
       {
         model: db.LSM_TTB,
@@ -66,7 +62,6 @@ const getById = async (req, res) => {
           {
             model: db.TrangThietBi,
             as: "TrangThietBi",
-            where: { ...filterThietBi },
           },
         ],
       },
@@ -88,8 +83,10 @@ const create = async (req, res) => {
         TrangThai: "Chưa trả",
       };
     });
+    await db.TrangThietBi.update({ TrangThai: 1 }, { where: { Ma_TTB: lst_id_ttb } });
   }
   await db.LSM_TTB.bulkCreate(lst_lsm_ttb);
+
   return reponseSuccess({ res, data: lsm });
 };
 

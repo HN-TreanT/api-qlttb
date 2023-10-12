@@ -1,15 +1,21 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
+  const { Ma_TTB, Ma_LSCN } = req.query;
+
   let filter = {};
+  if (Ma_TTB) filter.Ma_TTB = Ma_TTB;
+  if (Ma_LSCN) filter.Ma_LSCN = Ma_LSCN;
+
   const { count, rows } = await db.LSM_TTB.findAndCountAll({
     where: { ...filter },
+    order: [["createdAt", "DESC"]],
     ...req.pagination,
   });
   return responseSuccessWithData({
     res,
     data: {
-      count: count,
+      count: rows.length,
       rows: rows,
     },
   });

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "admin",
+    "password": "hnam23012002",
+    "database": "qlttb",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "NAmgsxoLMu0FL52OQYgs",
+    "database": "railway",
+    "host": "containers-us-west-202.railway.app",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "NAmgsxoLMu0FL52OQYgs",
+    "database": "railway",
+    "host": "containers-us-west-202.railway.app",
+    "dialect": "mysql"
+  }
+}
