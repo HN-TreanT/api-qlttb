@@ -16,19 +16,21 @@ const getAll = async (req, res) => {
     attributes: { exclude: "MatKhau" },
     order: [...order],
     ...req.pagination,
-    include: [{ model: db.LichLamViec, as: "LichLamViec" }],
+    // include: [{ model: db.LichLamViec, as: "LichLamViec" }],
   });
   return responseSuccessWithData({
     res,
     data: {
-      count: rows.length,
+      count: count,
       data: rows,
     },
   });
 };
 
 const getById = async (req, res) => {
-  const canbo = await db.CanBo.findByPk(req.params.id);
+  const canbo = await db.CanBo.findByPk(req.params.id, {
+    include: [{ model: db.LichLamViec, as: "LichLamViec" }],
+  });
   if (!canbo) return responseInValid({ res, message: "not found can bo" });
   return responseSuccessWithData({ res, data: canbo });
 };

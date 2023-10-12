@@ -32,19 +32,19 @@ const getAll = async (req, res) => {
         as: "CanBo",
         where: { ...filterCanBo },
       },
-      {
-        model: db.LSM_TTB,
-        as: "LSM_TTB",
-        include: [
-          {
-            model: db.TrangThietBi,
-            as: "TrangThietBi",
-          },
-        ],
-      },
+      // {
+      //   model: db.LSM_TTB,
+      //   as: "LSM_TTB",
+      //   include: [
+      //     {
+      //       model: db.TrangThietBi,
+      //       as: "TrangThietBi",
+      //     },
+      //   ],
+      // },
     ],
   });
-  return responseSuccessWithData({ res, data: { count: rows.length, data: rows } });
+  return responseSuccessWithData({ res, data: { count: count, data: rows } });
 };
 
 const getById = async (req, res) => {

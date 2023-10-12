@@ -13,17 +13,17 @@ const getAll = async (req, res) => {
     ...req.pagination,
     include: [
       { model: db.CanBo, as: "CanBo", attributes: { exclude: ["MatKhau"] } },
-      {
-        model: db.LS_TTB,
-        as: "LS_TTB",
-        include: [{ model: db.TrangThietBi, as: "TrangThietBi" }],
-      },
+      // {
+      //   model: db.LS_TTB,
+      //   as: "LS_TTB",
+      //   include: [{ model: db.TrangThietBi, as: "TrangThietBi" }],
+      // },
     ],
   });
   return responseSuccessWithData({
     res,
     data: {
-      count: rows.length,
+      count: count,
       data: rows,
     },
   });
