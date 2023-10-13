@@ -10,6 +10,7 @@ const getAll = async (req, res) => {
 
   const { rows, count } = await db.TrangThietBi.findAndCountAll({
     where: { ...filter },
+    order: [...order],
     ...req.pagination,
     include: [{ model: db.Loai_TTB, as: "Loai_TTB" }],
   });
