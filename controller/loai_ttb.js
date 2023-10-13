@@ -1,7 +1,10 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const getAll = async (req, res) => {
+  const { Ten_Loai } = req.query;
+
   let filter = {};
+  if (Ten_Loai) filter.Ten_Loai = Ten_Loai;
   const { count, rows } = await db.Loai_TTB.findAndCountAll({
     where: { ...filter },
     ...req.pagination,

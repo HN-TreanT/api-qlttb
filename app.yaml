@@ -1,0 +1,7 @@
+runtime: nodejs16
+build_env_variables:
+  MYSQL_USERNAME: 'root'
+  MYSQL_PASSWORD: 'NAmgsxoLMu0FL52OQYgs'
+  MYSQL_DATABASE: 'railway'
+  MYSQL_PORT: '6827'
+  MYSQL_HOST: 'containers-us-west-202.railway.app'
