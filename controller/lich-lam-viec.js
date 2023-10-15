@@ -5,7 +5,7 @@ const getAll = async (req, res) => {
   let order = [];
   if (req.query.Ma_CB) filter.Ma_CB = req.query.Ma_CB;
   if (req.query.order_ngay) order = [...order, ["Ngay", `${req.query.order_ngay}`]];
-  const { count, rows } = await db.LichLamViec({
+  const { count, rows } = await db.LichLamViec.findAndCountAll({
     where: { ...filter },
     order: [...order],
     ...req.pagination,
