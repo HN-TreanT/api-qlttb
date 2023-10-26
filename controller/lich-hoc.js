@@ -43,6 +43,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
   if (!LichHoc) return responseInValid({ res, message: "not found" });
+  await db.LichSuMuon.update({Ma_LH: null}, {where: {Ma_LH: LichHoc.Ma_LH}})
   await LichHoc.destroy();
   return reponseSuccess({ res });
 };

@@ -44,6 +44,9 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const TrangThietBi = await db.TrangThietBi.findByPk(req.params.id);
   if (!TrangThietBi) return responseInValid({ res, message: "not found" });
+  await db.LSM_TTB.destroy({where : {Ma_TTB: TrangThietBi.Ma_TTB}})
+  await db.LS_TTB.destroy({where : {Ma_TTB: TrangThietBi.Ma_TTB}})
+  await db.LichSuTinhTrang.destroy({where : {Ma_TTB: TrangThietBi.Ma_TTB}})
   await TrangThietBi.destroy();
   return reponseSuccess({ res });
 };

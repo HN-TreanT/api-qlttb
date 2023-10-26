@@ -82,6 +82,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichSuCapNhat = await db.LichSuCapNhat.findByPk(req.params.id);
   if (!LichSuCapNhat) return responseInValid({ res, message: "not found" });
+  await db.LS_TTB.destroy({where: {Ma_LSCN: LichSuCapNhat.Ma_LSCN}});
   await LichSuCapNhat.destroy();
   return reponseSuccess({ res });
 };

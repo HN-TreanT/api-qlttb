@@ -112,6 +112,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
+  await db.LSM_TTB.destroy({where: {Ma_LSM : LichSuMuon.Ma_LSM}})
   await LichSuMuon.destroy();
   return reponseSuccess({ res });
 };

@@ -73,6 +73,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id);
   if (!LichBaoDuong) return responseInValid({ res, message: "not found" });
+  await db.LichSuBaoDuong.destroy({where: {Ma_LBD: LichBaoDuong.Ma_LBD}});
   await LichBaoDuong.destroy();
   return reponseSuccess({ res });
 };
