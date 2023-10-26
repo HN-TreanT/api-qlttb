@@ -67,7 +67,7 @@ const getById = async (req, res) => {
       },
     ],
   });
-  if (!LichSuMuon) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LichSuMuon });
 };
 
@@ -93,7 +93,7 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_lsm_ttb } = req.body;
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
-  if (!LichSuMuon) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH });
   let new_lst_lsm_ttb = [];
   if (lst_lsm_ttb) {
@@ -111,7 +111,7 @@ const edit = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
-  if (!LichSuMuon) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   await LichSuMuon.destroy();
   return reponseSuccess({ res });
 };

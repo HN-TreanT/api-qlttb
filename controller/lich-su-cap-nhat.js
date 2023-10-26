@@ -40,7 +40,7 @@ const getById = async (req, res) => {
       },
     ],
   });
-  if (!LichSuCapNhat) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuCapNhat) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LichSuCapNhat });
 };
 
@@ -63,7 +63,7 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LichSuCapNhat = await db.LichSuCapNhat.findByPk(req.params.id);
-  if (!LichSuCapNhat) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuCapNhat) return responseInValid({ res, message: "not found" });
   await LichSuCapNhat.update(req.body);
   let lst_ls_ttb = [];
   if (req.body.lst_id_TTB) {
@@ -81,7 +81,7 @@ const edit = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const LichSuCapNhat = await db.LichSuCapNhat.findByPk(req.params.id);
-  if (!LichSuCapNhat) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuCapNhat) return responseInValid({ res, message: "not found" });
   await LichSuCapNhat.destroy();
   return reponseSuccess({ res });
 };

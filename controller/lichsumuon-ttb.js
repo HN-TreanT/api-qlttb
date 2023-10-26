@@ -27,7 +27,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const LSM_TTB = await db.LSM_TTB.findByPk(req.params.id);
-  if (!LSM_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LSM_TTB) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LSM_TTB });
 };
 
@@ -38,14 +38,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LSM_TTB = await db.LSM_TTB.findByPk(req.params.id);
-  if (!LSM_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LSM_TTB) return responseInValid({ res, message: "not found" });
   await LSM_TTB.update(req.body);
   return reponseSuccess({ res });
 };
 
 const deleteById = async (req, res) => {
   const LSM_TTB = await db.LSM_TTB.findByPk(req.params.id);
-  if (!LSM_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LSM_TTB) return responseInValid({ res, message: "not found" });
   await LSM_TTB.destroy();
   return reponseSuccess({ res });
 };

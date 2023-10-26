@@ -25,7 +25,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const TrangThietBi = await db.TrangThietBi.findByPk(req.params.id);
-  if (!TrangThietBi) return responseInValid({ res, message: "not found can bo" });
+  if (!TrangThietBi) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: TrangThietBi });
 };
 
@@ -36,14 +36,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const TrangThietBi = await db.TrangThietBi.findByPk(req.params.id);
-  if (!TrangThietBi) return responseInValid({ res, message: "not found can bo" });
+  if (!TrangThietBi) return responseInValid({ res, message: "not found" });
   await TrangThietBi.update(req.body);
   return responseSuccessWithData({ res, data: TrangThietBi });
 };
 
 const deleteById = async (req, res) => {
   const TrangThietBi = await db.TrangThietBi.findByPk(req.params.id);
-  if (!TrangThietBi) return responseInValid({ res, message: "not found can bo" });
+  if (!TrangThietBi) return responseInValid({ res, message: "not found" });
   await TrangThietBi.destroy();
   return reponseSuccess({ res });
 };

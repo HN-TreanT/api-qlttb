@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const TinhTrangTTB = await db.TinhTrangTTB.findByPk(req.params.id);
-  if (!TinhTrangTTB) return responseInValid({ res, message: "not found can bo" });
+  if (!TinhTrangTTB) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: TinhTrangTTB });
 };
 
@@ -32,14 +32,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const TinhTrangTTB = await db.TinhTrangTTB.findByPk(req.params.id);
-  if (!TinhTrangTTB) return responseInValid({ res, message: "not found can bo" });
+  if (!TinhTrangTTB) return responseInValid({ res, message: "not found" });
   await TinhTrangTTB.update(req.body);
   return responseSuccessWithData({ res, data: TinhTrangTTB });
 };
 
 const deleteById = async (req, res) => {
   const TinhTrangTTB = await db.TinhTrangTTB.findByPk(req.params.id);
-  if (!TinhTrangTTB) return responseInValid({ res, message: "not found can bo" });
+  if (!TinhTrangTTB) return responseInValid({ res, message: "not found" });
   await TinhTrangTTB.destroy();
   return reponseSuccess({ res });
 };

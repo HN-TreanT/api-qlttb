@@ -54,7 +54,7 @@ const getById = async (req, res) => {
       },
     ],
   });
-  if (!LichBaoDuong) return responseInValid({ res, message: "not found can bo" });
+  if (!LichBaoDuong) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LichBaoDuong });
 };
 
@@ -65,14 +65,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id);
-  if (!LichBaoDuong) return responseInValid({ res, message: "not found can bo" });
+  if (!LichBaoDuong) return responseInValid({ res, message: "not found" });
   await LichBaoDuong.update(req.body);
   return responseSuccessWithData({ res, data: LichBaoDuong });
 };
 
 const deleteById = async (req, res) => {
   const LichBaoDuong = await db.LichBaoDuong.findByPk(req.params.id);
-  if (!LichBaoDuong) return responseInValid({ res, message: "not found can bo" });
+  if (!LichBaoDuong) return responseInValid({ res, message: "not found" });
   await LichBaoDuong.destroy();
   return reponseSuccess({ res });
 };

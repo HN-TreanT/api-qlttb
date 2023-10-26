@@ -20,7 +20,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const Loai_TTB = await db.Loai_TTB.findByPk(req.params.id);
-  if (!Loai_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!Loai_TTB) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: Loai_TTB });
 };
 
@@ -31,14 +31,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const Loai_TTB = await db.Loai_TTB.findByPk(req.params.id);
-  if (!Loai_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!Loai_TTB) return responseInValid({ res, message: "not found" });
   const data = await Loai_TTB.update(req.body);
   return responseSuccessWithData({ res, data: data });
 };
 
 const deleteById = async (req, res) => {
   const Loai_TTB = await db.Loai_TTB.findByPk(req.params.id);
-  if (!Loai_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!Loai_TTB) return responseInValid({ res, message: "not found" });
   await Loai_TTB.destroy();
   return reponseSuccess({ res });
 };

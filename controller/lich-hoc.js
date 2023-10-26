@@ -24,7 +24,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
-  if (!LichHoc) return responseInValid({ res, message: "not found can bo" });
+  if (!LichHoc) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LichHoc });
 };
 
@@ -35,14 +35,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
-  if (!LichHoc) return responseInValid({ res, message: "not found can bo" });
+  if (!LichHoc) return responseInValid({ res, message: "not found" });
   await LichHoc.update(req.body);
   return responseSuccessWithData({ res, data: LichHoc });
 };
 
 const deleteById = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
-  if (!LichHoc) return responseInValid({ res, message: "not found can bo" });
+  if (!LichHoc) return responseInValid({ res, message: "not found" });
   await LichHoc.destroy();
   return reponseSuccess({ res });
 };

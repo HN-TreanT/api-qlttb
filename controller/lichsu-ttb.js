@@ -32,7 +32,7 @@ const getById = async (req, res) => {
       { model: db.TrangThietBi, as: "TrangThietBi" },
     ],
   });
-  if (!LS_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LS_TTB) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LS_TTB });
 };
 
@@ -43,14 +43,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LS_TTB = await db.LS_TTB.findByPk(req.params.id);
-  if (!LS_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LS_TTB) return responseInValid({ res, message: "not found" });
   await LS_TTB.update(req.body);
   return reponseSuccess({ res });
 };
 
 const deleteById = async (req, res) => {
   const LS_TTB = await db.LS_TTB.findByPk(req.params.id);
-  if (!LS_TTB) return responseInValid({ res, message: "not found can bo" });
+  if (!LS_TTB) return responseInValid({ res, message: "not found" });
   await LS_TTB.destroy();
   return reponseSuccess({ res });
 };

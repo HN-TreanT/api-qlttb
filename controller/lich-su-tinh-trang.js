@@ -43,7 +43,7 @@ const getById = async (req, res) => {
       },
     ],
   });
-  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: LichSuTinhTrang });
 };
 
@@ -54,14 +54,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const LichSuTinhTrang = await db.LichSuTinhTrang.findByPk(req.params.id);
-  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found" });
   await LichSuTinhTrang.update(req.body);
   return responseSuccessWithData({ res, data: LichSuTinhTrang });
 };
 
 const deleteById = async (req, res) => {
   const LichSuTinhTrang = await db.LichSuTinhTrang.findByPk(req.params.id);
-  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found can bo" });
+  if (!LichSuTinhTrang) return responseInValid({ res, message: "not found" });
   await LichSuTinhTrang.destroy();
   return reponseSuccess({ res });
 };

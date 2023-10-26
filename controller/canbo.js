@@ -31,7 +31,7 @@ const getById = async (req, res) => {
   const canbo = await db.CanBo.findByPk(req.params.id, {
     include: [{ model: db.LichLamViec, as: "LichLamViec" }],
   });
-  if (!canbo) return responseInValid({ res, message: "not found can bo" });
+  if (!canbo) return responseInValid({ res, message: "not found" });
   return responseSuccessWithData({ res, data: canbo });
 };
 
@@ -42,14 +42,14 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const canbo = await db.CanBo.findByPk(req.params.id);
-  if (!canbo) return responseInValid({ res, message: "not found can bo" });
+  if (!canbo) return responseInValid({ res, message: "not found" });
   await canbo.update(req.body);
   return reponseSuccess({ res });
 };
 
 const deleteById = async (req, res) => {
   const canbo = await db.CanBo.findByPk(req.params.id);
-  if (!canbo) return responseInValid({ res, message: "not found can bo" });
+  if (!canbo) return responseInValid({ res, message: "not found" });
   await canbo.destroy();
   return reponseSuccess({ res });
 };
