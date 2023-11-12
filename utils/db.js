@@ -32,10 +32,10 @@ sequelize
   .then(() => {
     console.log("Connection has been established successfully.");
   })
-  .catch((err) => {
+  .catch((err) => { 
     console.error("Unable to connect to the database:", err);
   });
-// sequelize.sync({ force: true }).then(() => {
-//   console.log("yes re-sync done!");
-// });
-module.exports = sequelize;
+  // sequelize.sync({ force: true }).then(() => {
+  //   console.log("yes re-sync done!");
+  // });
+module.exports = sequelize;         

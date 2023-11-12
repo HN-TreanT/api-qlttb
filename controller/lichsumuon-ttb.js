@@ -5,7 +5,7 @@ const getAll = async (req, res) => {
 
   let filter = {};
   if (Ma_TTB) filter.Ma_TTB = Ma_TTB;
-  if (Ma_LSM) filter.Ma_LSCN = Ma_LSM;
+  if (Ma_LSM) filter.Ma_LSM = Ma_LSM;
 
   const { count, rows } = await db.LSM_TTB.findAndCountAll({
     where: { ...filter },
@@ -20,7 +20,7 @@ const getAll = async (req, res) => {
     res,
     data: {
       count: count,
-      rows: rows,
+      data: rows,
     },
   });
 };

@@ -2,17 +2,13 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("LichSuMuon", "TrangThai", {
-      type: Sequelize.TINYINT,
-      defaultValue: 0,
+     // Thêm cột mới với kiểu STRING
+    await queryInterface.addColumn("PhongHoc", "TenPhong", {
+      type: Sequelize.STRING,
     });
-
-    await queryInterface.addColumn("TrangThietBi", "TrangThai", {
-      type: Sequelize.TINYINT,
-      defaultValue: 0,
-    });
+    await queryInterface.removeColumn("PhongHoc", "Ten_PH");
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    // await queryInterface.dropTable("Users");
   },
 };

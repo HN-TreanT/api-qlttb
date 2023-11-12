@@ -22,6 +22,14 @@ const TrangThietBi = sequelize.define(
         key: "Ma_Loai_TTB",
       },
     },
+    Ma_PH: {
+      type:DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model:"PhongHoc",
+        key:"Ma_PH"
+      }
+    },
 
     NgayNhap: {
       type: DataTypes.DATE,
@@ -52,6 +60,11 @@ const TrangThietBi = sequelize.define(
         name: "trang_thiet_bi_idfk_1",
         using: "BTREE",
         fields: [{ name: "Ma_Loai_TTB" }],
+      },
+      {
+        name: "trang_thiet_bi_idfk_2",
+        using: "BTREE",
+        fields: [{ name: "Ma_PH" }],
       },
     ],
   }

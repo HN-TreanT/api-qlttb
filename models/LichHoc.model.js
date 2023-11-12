@@ -9,19 +9,17 @@ const LichHoc = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    Lop: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    PhongHoc: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
     NgayHoc: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    Ma_PH: {
+      type: DataTypes.INTEGER,
+      allowNull:true,
+      references: {
+        model:"PhongHoc",
+        key:"Ma_PH"
+      }
     },
 
     TG_BD: {
@@ -44,6 +42,11 @@ const LichHoc = sequelize.define(
         unique: true,
         using: "BTREE",
         fields: [{ name: "Ma_LH" }],
+      },
+      {
+        name: "lich_hoc_idfk_1",
+        using: "BTREE",
+        fields: [{ name: "Ma_PH" }],
       },
     ],
   }

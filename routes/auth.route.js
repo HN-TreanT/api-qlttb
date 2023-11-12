@@ -7,4 +7,5 @@ Route.post("/login", tryCatch(controller.login));
 Route.post("/register", tryCatch(controller.register));
 Route.post("/change-password", tryCatch(controller.change_password));
 Route.get("/me", requireLogin, tryCatch(controller.getMe));
+Route.post("/refresh", tryCatch(controller.refresh));
 module.exports = Route;

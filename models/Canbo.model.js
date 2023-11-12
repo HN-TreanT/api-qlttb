@@ -43,7 +43,7 @@ const CanBo = sequelize.define(
     role_id: {
       type: DataTypes.CHAR,
       allowNull: false,
-      references: {
+      references: { 
         model: "Role",
         key: "role_id",
       },

@@ -12,6 +12,7 @@ const LichSuMuon_TrangThietBi = sequelize.define(
     Ma_TTB: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete:"CASCADE",
       references: {
         model: "TrangThietBi",
         key: "Ma_TTB",
@@ -20,6 +21,7 @@ const LichSuMuon_TrangThietBi = sequelize.define(
     Ma_LSM: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete:"CASCADE",
       references: {
         model: "LichSuMuon",
         key: "Ma_LSM",

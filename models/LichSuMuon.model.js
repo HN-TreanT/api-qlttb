@@ -36,6 +36,9 @@ const LichSuMuon = sequelize.define(
         key: "Ma_CB",
       },
     },
+    ChuThich: {
+      type: DataTypes.STRING,
+    },
 
     TrangThai: {
       type: DataTypes.TINYINT,

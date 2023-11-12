@@ -1,10 +1,10 @@
 const _CanBo = require("./Canbo.model");
-const _LichBaoDuong = require("./LichBaoDuong");
 const _LichHoc = require("./LichHoc.model");
 const _LichLamViec = require("./LichLamViec.model");
-const _LichSuBaoDuong = require("./LichSuBaoDuong.model");
 const _LichSuCapNhat = require("./LichSuCapNhat.model");
 const _LichSuMuon = require("./LichSuMuon.model");
+
+const _PhongHoc = require("./PhongHoc.model")
 
 const _LichSuTinhTrang = require("./LichSuTinhTrang.model");
 const _LS_TTB = require("./LS_TTB.model");
@@ -16,12 +16,13 @@ const _role = require("./Role.model");
 const Role = require("./Role.model");
 const _Loai_TTB = require("./Loai_TTB.model");
 
+const _Lop = require("./Lop.model")
+const _LichHoc_Lop = require("./LichHoc_Lop.model")
+
 function initModels() {
   const CanBo = _CanBo;
-  const LichBaoDuong = _LichBaoDuong;
   const LichHoc = _LichHoc;
   const LichLamViec = _LichLamViec;
-  const LichSuBaoDuong = _LichSuBaoDuong;
   const LichSuCapNhat = _LichSuCapNhat;
   const LichSuMuon = _LichSuMuon;
   const LichSuTinhTrang = _LichSuTinhTrang;
@@ -31,9 +32,16 @@ function initModels() {
   const TrangThietBi = _TrangThietBi;
   const role = _role;
   const Loai_TTB = _Loai_TTB;
+  const PhongHoc = _PhongHoc;
+  const Lop = _Lop;
+  const LichHoc_Lop = _LichHoc_Lop
 
-  CanBo.hasMany(LichSuBaoDuong, { as: "LichSuBaoDuong", foreignKey: "Ma_CB" });
-  LichSuBaoDuong.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
+  
+  PhongHoc.hasMany(TrangThietBi, {as:"TrangThietBi", foreignKey:"Ma_PH"})
+  TrangThietBi.hasOne(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
+
+  LichHoc.hasOne(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
+  PhongHoc.hasMany(LichHoc, {as:"LichHoc", foreignKey:"Ma_PH"})  
 
   CanBo.hasMany(LichLamViec, { as: "LichLamViec", foreignKey: "Ma_CB" });
   LichLamViec.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
@@ -43,12 +51,6 @@ function initModels() {
 
   CanBo.hasMany(LichSuCapNhat, { as: "LichSuCapNhat", foreignKey: "Ma_CB" });
   LichSuCapNhat.belongsTo(CanBo, { as: "CanBo", foreignKey: "Ma_CB" });
-
-  LichBaoDuong.hasMany(LichSuBaoDuong, { as: "LichSuBaoDuong", foreignKey: "Ma_LBD" });
-  LichSuBaoDuong.belongsTo(LichBaoDuong, { as: "LichBaoDuong", foreignKey: "Ma_LBD" });
-
-  LichLamViec.hasMany(LichBaoDuong, { as: "LichBaoDuong", foreignKey: "Ma_LLV" });
-  LichBaoDuong.belongsTo(LichLamViec, { as: "LichLamViec", foreignKey: "Ma_LLV" });
 
   LichSuCapNhat.hasMany(LS_TTB, { as: "LS_TTB", foreignKey: "Ma_LSCN" });
   LS_TTB.belongsTo(LichSuCapNhat, { as: "LichSuCapNhat", foreignKey: "Ma_LSCN" });
@@ -76,13 +78,19 @@ function initModels() {
 
   Loai_TTB.hasMany(TrangThietBi, { as: "TrangThietBi", foreignKey: "Ma_Loai_TTB" });
   TrangThietBi.belongsTo(Loai_TTB, { as: "Loai_TTB", foreignKey: "Ma_Loai_TTB" });
+
+  LichHoc.hasMany(LichHoc_Lop, {as:"LichHoc_Lop", foreignKey:"Ma_LH"})
+  LichHoc_Lop.belongsTo(LichHoc, {as:"LichHoc", foreignKey:"Ma_LH"})
+
+  Lop.hasMany(LichHoc_Lop, {as:"LichHoc_Lop", foreignKey:"Ma_Lop"})
+  LichHoc_Lop.belongsTo(Lop, {as:"Lop", foreignKey:"Ma_Lop"})
+  
   return {
     CanBo,
     TrangThietBi,
     LichHoc,
+    PhongHoc,
     LichLamViec,
-    LichBaoDuong,
-    LichSuBaoDuong,
     LichSuMuon,
     LichSuCapNhat,
     LichSuTinhTrang,
@@ -91,6 +99,9 @@ function initModels() {
     TinhTrangTTB,
     Role,
     Loai_TTB,
+    LichHoc_Lop,
+    Lop,
+    
   };
 }
 const db = initModels();

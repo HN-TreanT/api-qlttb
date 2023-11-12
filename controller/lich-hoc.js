@@ -3,20 +3,34 @@ const { reponseSuccess, responseSuccessWithData, responseInValid } = require("..
 const { Op } = require("sequelize");
 const getAll = async (req, res) => {
   let filter = {};
+  let filterPhonghOC = {};
   let order = [];
-  if (req.query.ten_lop) filter.Lop = { [Op.substring]: req.query.ten_lop };
-  if (req.query.phong_hoc) filter.PhongHoc = { [Op.substring]: req.query.phong_hoc };
+  if(req.query.Ma_PH) {
+    filterPhonghOC.Ma_PH = req.query.Ma_PH
+  }
   if (req.query.order_ngayhoc) order = [...order, ["NgayHoc", `${req.query.order_ngayhoc}`]];
   if (req.query.order_TG_BD) order = [...order, ["TG_BD", `${req.query.order_TG_BD}`]];
-  const { count, rows } = await db.LichHoc.findAndCountAll({
+  // const { count, rows } = await db.LichHoc.findAndCountAll({
+  //   where: { ...filter },
+  //   order: [...order],
+  //   ...req.pagination,
+  //   include: [
+  //     { model: db.PhongHoc, as: "PhongHoc", where: { ...filterPhonghOC } },
+  //   ]
+  // });
+  const rows = await db.LichHoc.findAll({
     where: { ...filter },
     order: [...order],
     ...req.pagination,
-  });
+    include: [
+      { model: db.PhongHoc, as: "PhongHoc", where: { ...filterPhonghOC } },
+    ]
+  })
+
   return responseSuccessWithData({
     res,
     data: {
-      count: count,
+      count: rows.length,
       data: rows,
     },
   });
@@ -43,8 +57,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
   if (!LichHoc) return responseInValid({ res, message: "not found" });
-  await db.LichSuMuon.update({Ma_LH: null}, {where: {Ma_LH: LichHoc.Ma_LH}})
-  await LichHoc.destroy();
+  await LichHoc.destroy()
   return reponseSuccess({ res });
 };
 

@@ -16,6 +16,7 @@ const getAll = async (req, res) => {
     attributes: { exclude: "MatKhau" },
     order: [...order],
     ...req.pagination,
+    include: [{model: db.Role, as:"Role"}]
     // include: [{ model: db.LichLamViec, as: "LichLamViec" }],
   });
   return responseSuccessWithData({

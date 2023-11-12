@@ -60,4 +60,13 @@ const change_password = async (req, res) => {
   await account.update({ MatKhau: hashPassword });
   return responseSuccessWithData({ res, data: account });
 };
-module.exports = { login, register, change_password, getMe };
+
+const refresh = async (req,res) => {
+  const data = security.verifyRFToken(req.body.refresh_token)
+  const access_token = security.generateToken(data, '300s');
+  return responseSuccessWithData({res, data: {
+    access_token: access_token
+  }})
+
+}
+module.exports = { login, register, change_password, getMe ,refresh};
