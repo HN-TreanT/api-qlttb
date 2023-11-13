@@ -17,7 +17,7 @@ const requireLogin = (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    return responseServerError({ res, err: error.message });
+    return responseUnthorized({ res });
   }
 };
 
