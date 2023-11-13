@@ -40,7 +40,6 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichLamViec = await db.LichLamViec.findByPk(req.params.id);
   if (!LichLamViec) return responseInValid({ res, message: "Không tìm thấy lịch làm việc" });
-  await db.LichBaoDuong.destroy({where: {Ma_LLV: LichLamViec.Ma_LLV}});
   await LichLamViec.destroy();
   return reponseSuccess({ res });
 };

@@ -54,7 +54,6 @@ const deleteById = async (req, res) => {
   await db.LichLamViec.destroy({where: { Ma_CB: canbo.Ma_CB}});
   await db.LichSuMuon.destroy({where: { Ma_CB: canbo.Ma_CB}});
   await db.LichSuCapNhat.destroy({where: { Ma_CB: canbo.Ma_CB}});
-
   await canbo.destroy();
   return reponseSuccess({ res });
 };
