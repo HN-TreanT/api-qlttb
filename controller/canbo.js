@@ -52,7 +52,6 @@ const deleteById = async (req, res) => {
   const canbo = await db.CanBo.findByPk(req.params.id);
   if (!canbo) return responseInValid({ res, message: "not found" });
   await db.LichLamViec.destroy({where: { Ma_CB: canbo.Ma_CB}});
-  await db.LichSuBaoDuong.destroy({where: { Ma_CB: canbo.Ma_CB}});
   await db.LichSuMuon.destroy({where: { Ma_CB: canbo.Ma_CB}});
   await db.LichSuCapNhat.destroy({where: { Ma_CB: canbo.Ma_CB}});
 
