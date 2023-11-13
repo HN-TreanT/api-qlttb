@@ -9,6 +9,11 @@ const getAll = async (req, res) => {
     where: { ...filter },
     order: [...order],
     ...req.pagination,
+    include:[
+      {
+        model: db.CanBo, as:"CanBo"
+      }
+    ]
   });
   return responseSuccessWithData({
     res,
