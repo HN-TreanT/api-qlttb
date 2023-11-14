@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 const getAll = async (req, res) => {
   let filter = {};
  if(req.query.search) {
-    filter.Ten_PH = {[Op.substring]: req.query.search}
+    filter.TenPhong = {[Op.substring]: req.query.search}
  }
   const { count, rows } = await db.PhongHoc.findAndCountAll({
     where: { ...filter },
