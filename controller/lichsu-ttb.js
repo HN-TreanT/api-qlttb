@@ -37,8 +37,8 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  await db.LS_TTB.create(req.body);
-  return reponseSuccess({ res });
+ const data = await db.LS_TTB.create(req.body);
+  return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {

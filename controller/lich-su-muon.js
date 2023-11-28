@@ -87,7 +87,7 @@ const create = async (req, res) => {
   }
   await db.LSM_TTB.bulkCreate(lst_lsm_ttb);
 
-  return reponseSuccess({ res, data: lsm });
+  return responseSuccessWithData({ res, data: lsm });
 };
 
 const edit = async (req, res) => {
