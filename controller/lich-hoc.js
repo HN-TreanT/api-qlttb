@@ -41,14 +41,37 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  const {id_lops} = req.body
   const data = await db.LichHoc.create(req.body);
+  let list_lops = []
+  if(id_lops) {
+    list_lops =  id_lops.map((item) => {
+      return {
+        Ma_Lop: item,
+        Ma_LH: data.Ma_LH
+      }
+    })
+  }
+  await db.LichHoc_Lop.bulkCreate(list_lops)
   return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {
+  const {id_lops} = req.body
   const LichHoc = await db.LichHoc.findByPk(req.params.id);
   if (!LichHoc) return responseInValid({ res, message: "not found" });
   await LichHoc.update(req.body);
+  let list_lops = []
+  if(id_lops) {
+    list_lops =  id_lops.map((item) => {
+      return {
+        Ma_Lop: item,
+        Ma_LH: LichHoc.Ma_LH
+      }
+    })
+  }
+  await db.LichHoc_Lop.destroy({where : {Ma_LH : LichHoc.Ma_LH}})
+  await db.LichHoc_Lop.bulkCreate(list_lops)
   return responseSuccessWithData({ res, data: LichHoc });
 };
 
