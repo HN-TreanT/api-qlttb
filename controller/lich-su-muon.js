@@ -26,11 +26,15 @@ const getAll = async (req, res) => {
     where: { ...filter },
     ...req.pagination,
     include: [
-      { model: db.LichHoc, as: "LichHoc", where: { ...filterLichHoc } },
+      { model: db.LichHoc, as: "LichHoc"  ,
+       where: { ...filterLichHoc } ,
+       required:false
+    },
       {
         model: db.CanBo,
         as: "CanBo",
         where: { ...filterCanBo },
+        required:false
       },
       // {
       //   model: db.LSM_TTB,

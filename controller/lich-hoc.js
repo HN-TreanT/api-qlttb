@@ -10,27 +10,23 @@ const getAll = async (req, res) => {
   }
   if (req.query.order_ngayhoc) order = [...order, ["NgayHoc", `${req.query.order_ngayhoc}`]];
   if (req.query.order_TG_BD) order = [...order, ["TG_BD", `${req.query.order_TG_BD}`]];
-  // const { count, rows } = await db.LichHoc.findAndCountAll({
-  //   where: { ...filter },
-  //   order: [...order],
-  //   ...req.pagination,
-  //   include: [
-  //     { model: db.PhongHoc, as: "PhongHoc", where: { ...filterPhonghOC } },
-  //   ]
-  // });
-  const rows = await db.LichHoc.findAll({
-    where: { ...filter },
-    order: [...order],
-    ...req.pagination,
+  const { count, rows } = await db.LichHoc.findAndCountAll({
+    // where: { ...filter },
+    // order: [...order],
+    // ...req.pagination,
     include: [
-      { model: db.PhongHoc, as: "PhongHoc", where: { ...filterPhonghOC } },
+      { model: db.PhongHoc, as: "PhongHoc",
+       where: { ...filterPhonghOC } ,
+       required:false
+      },
     ]
-  })
+  });
+  
 
   return responseSuccessWithData({
     res,
     data: {
-      count: rows.length,
+      count: count,
       data: rows,
     },
   });
