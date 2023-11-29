@@ -38,9 +38,9 @@ function initModels() {
 
   
   PhongHoc.hasMany(TrangThietBi, {as:"TrangThietBi", foreignKey:"Ma_PH"})
-  TrangThietBi.hasOne(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
+  TrangThietBi.belongsTo(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
 
-  LichHoc.hasOne(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
+  LichHoc.belongsTo(PhongHoc, {as:"PhongHoc", foreignKey:"Ma_PH"})
   PhongHoc.hasMany(LichHoc, {as:"LichHoc", foreignKey:"Ma_PH"})  
 
   CanBo.hasMany(LichLamViec, { as: "LichLamViec", foreignKey: "Ma_CB" });
