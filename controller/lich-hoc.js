@@ -20,15 +20,17 @@ const getAll = async (req, res) => {
        required:false
       },
       {
-        model: db.LichHoc_Lop, as:"LichHoc_Lop"
+        model: db.LichHoc_Lop, as:"LichHoc_Lop",
+       required: false
       }
     ]
   });
+   const total = await db.LichHoc.findAll({ where: { ...filter },})
 
   return responseSuccessWithData({
     res,
     data: {
-      count: rows.length,
+      count: total.length,
       data: rows,
     },
   });
