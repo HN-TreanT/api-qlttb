@@ -19,14 +19,16 @@ const getAll = async (req, res) => {
        where: { ...filterPhonghOC } ,
        required:false
       },
+      {
+        model: db.LichHoc_Lop, as:"LichHoc_Lop"
+      }
     ]
   });
-  
 
   return responseSuccessWithData({
     res,
     data: {
-      count: count,
+      count: rows.length,
       data: rows,
     },
   });
