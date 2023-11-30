@@ -17,11 +17,10 @@ const getAll = async (req, res) => {
     include: [
       { model: db.PhongHoc, as: "PhongHoc",
        where: { ...filterPhonghOC } ,
-       required:false
       },
       {
         model: db.LichHoc_Lop, as:"LichHoc_Lop",
-       required: false
+
       }
     ]
   });
