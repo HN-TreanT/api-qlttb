@@ -56,7 +56,7 @@ const getById = async (req, res) => {
   const LichHoc = await db.LichHoc.findByPk(req.params.id, {
     include: [
       { model: db.PhongHoc, as: "PhongHoc",
-       where: { ...filterPhonghOC } ,
+    
       },
       {
         model: db.LichHoc_Lop, as:"LichHoc_Lop",
