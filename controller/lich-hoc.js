@@ -8,6 +8,9 @@ const getAll = async (req, res) => {
   if(req.query.Ma_PH) {
     filterPhonghOC.Ma_PH = req.query.Ma_PH
   }
+  if(req.query.NgayHoc) {
+    filter.NgayHoc = req.query.NgayHoc
+  }
   if (req.query.order_ngayhoc) order = [...order, ["NgayHoc", `${req.query.order_ngayhoc}`]];
   if (req.query.order_TG_BD) order = [...order, ["TG_BD", `${req.query.order_TG_BD}`]];
   const { count, rows } = await db.LichHoc.findAndCountAll({
@@ -20,11 +23,25 @@ const getAll = async (req, res) => {
       },
       {
         model: db.LichHoc_Lop, as:"LichHoc_Lop",
-
+        include: [
+          { model: db.Lop, as: "Lop"}
+        ]
       }
     ]
   });
-   const total = await db.LichHoc.findAll({ where: { ...filter },})
+   const total = await db.LichHoc.findAll({ where: { ...filter },
+    include: [
+      { model: db.PhongHoc, as: "PhongHoc",
+       where: { ...filterPhonghOC } ,
+      },
+      {
+        model: db.LichHoc_Lop, as:"LichHoc_Lop",
+        include: [
+          { model: db.Lop, as: "Lop"}
+        ]
+      }
+    ]
+  })
 
   return responseSuccessWithData({
     res,
