@@ -76,8 +76,8 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb } = req.body;
-  const lsm = await db.LichSuMuon.create({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH });
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb, ChuThich } = req.body;
+  const lsm = await db.LichSuMuon.create({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich });
   let lst_lsm_ttb = [];
   if (lst_id_ttb) {
     lst_lsm_ttb = lst_id_ttb.map((item) => {
@@ -95,10 +95,10 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_lsm_ttb } = req.body;
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_lsm_ttb, ChuThich } = req.body;
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
-  await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH });
+  await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich });
   let new_lst_lsm_ttb = [];
   if (lst_lsm_ttb) {
     new_lst_lsm_ttb = lst_lsm_ttb.map((item) => {
