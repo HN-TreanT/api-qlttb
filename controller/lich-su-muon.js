@@ -36,19 +36,51 @@ const getAll = async (req, res) => {
         where: { ...filterCanBo },
         required:false
       },
-      // {
-      //   model: db.LSM_TTB,
-      //   as: "LSM_TTB",
-      //   include: [
-      //     {
-      //       model: db.TrangThietBi,
-      //       as: "TrangThietBi",
-      //     },
-      //   ],
-      // },
+      {
+        model: db.LSM_TTB,
+        as: "LSM_TTB",
+        include: [
+          {
+            model: db.TrangThietBi,
+            as: "TrangThietBi",
+          },
+        ],
+      },
     ],
   });
-  return responseSuccessWithData({ res, data: { count: count, data: rows } });
+  const total = await db.LichSuMuon.findAll({
+    where: { ...filter },
+    ...req.pagination,
+    include: [
+      { model: db.LichHoc, as: "LichHoc"  ,
+       where: { ...filterLichHoc } ,
+       required:false
+    },
+      {
+        model: db.CanBo,
+        as: "CanBo",
+        where: { ...filterCanBo },
+        required:false
+      },
+    ],
+  });
+  // const newRows = rows.map(async (item) => {
+  //   const lsm_ttbs = await db.LSM_TTB.findAll({where: {Ma_LSM : item.Ma_LSM}, 
+  //     include: [
+  //       {
+  //         model: db.TrangThietBi, as:"TrangThietBi"
+  //       }
+  //     ]
+  //   })
+  //    const lst_id_ttb = lsm_ttbs.map((lsm_ttb) => lsm_ttb.TrangThietBi.Ma_TTB)
+  //   return {
+  //     ...item,
+  //     lst_id_ttb: lst_id_ttb
+  //   }
+    
+  // })
+  // console.log(newRows)
+  return responseSuccessWithData({ res, data: { count: total.length, data: rows } });
 };
 
 const getById = async (req, res) => {
