@@ -135,8 +135,9 @@ const edit = async (req, res) => {
   if (lst_id_ttb) {
     new_lst_lsm_ttb = lst_id_ttb.map((item) => {
       return {
-        ...item,
+        Ma_TTB: item,
         Ma_LSM: LichSuMuon.Ma_LSM,
+        TrangThai: "Chưa trả",
       };
     });
   }
