@@ -95,13 +95,13 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_lsm_ttb, ChuThich } = req.body;
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb, ChuThich } = req.body;
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich });
   let new_lst_lsm_ttb = [];
-  if (lst_lsm_ttb) {
-    new_lst_lsm_ttb = lst_lsm_ttb.map((item) => {
+  if (lst_id_ttb) {
+    new_lst_lsm_ttb = lst_id_ttb.map((item) => {
       return {
         ...item,
         Ma_LSM: LichSuMuon.Ma_LSM,
