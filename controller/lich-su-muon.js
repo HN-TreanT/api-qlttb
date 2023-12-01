@@ -3,19 +3,11 @@ const { reponseSuccess, responseSuccessWithData, responseInValid } = require("..
 const { Op } = require("sequelize");
 const getAll = async (req, res) => {
   let filter = {};
-  let filterLichHoc = {};
-  let filterCanBo = {};
 
   if (req.query.ten_nguoi_muon) filter.NguoiMuon = { [Op.substring]: req.query.ten_nguoi_muon };
   if (req.query.so_dien_thoai) filter.SoDienThoai = req.query.so_dien_thoai;
-  if (req.query.search_lich_hoc) {
-    filterLichHoc[Op.or] = {
-      Lop: { [Op.substring]: req.query.search_lich_hoc },
-      PhongHoc: { [Op.substring]: req.query.search_lich_hoc },
-    };
-  }
-  if (req.query.ten_can_bo) {
-    filterCanBo.Ten_CB = { [Op.substring]: req.query.Ten_CB };
+  if (req.query.Ma_CB) {
+    filter.Ma_CB = req.query.Ma_CB;
   }
 
   if (req.query.time_start && req.query.time_end) {
@@ -27,14 +19,10 @@ const getAll = async (req, res) => {
     ...req.pagination,
     include: [
       { model: db.LichHoc, as: "LichHoc"  ,
-       where: { ...filterLichHoc } ,
-       required:false
     },
       {
         model: db.CanBo,
         as: "CanBo",
-        where: { ...filterCanBo },
-        required:false
       },
       {
         model: db.LSM_TTB,
@@ -53,14 +41,10 @@ const getAll = async (req, res) => {
     ...req.pagination,
     include: [
       { model: db.LichHoc, as: "LichHoc"  ,
-       where: { ...filterLichHoc } ,
-       required:false
     },
       {
         model: db.CanBo,
         as: "CanBo",
-        where: { ...filterCanBo },
-        required:false
       },
     ],
   });

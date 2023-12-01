@@ -3,10 +3,9 @@ const { reponseSuccess, responseSuccessWithData, responseInValid } = require("..
 const { Op } = require("sequelize");
 const getAll = async (req, res) => {
   let filter = {};
-  let filterPhonghOC = {};
   let order = [];
   if(req.query.Ma_PH) {
-    filterPhonghOC.Ma_PH = req.query.Ma_PH
+    filter.Ma_PH = req.query.Ma_PH
   }
   if(req.query.NgayHoc) {
     filter.NgayHoc = req.query.NgayHoc
@@ -19,7 +18,6 @@ const getAll = async (req, res) => {
     ...req.pagination,
     include: [
       { model: db.PhongHoc, as: "PhongHoc",
-       where: { ...filterPhonghOC } ,
       },
       {
         model: db.LichHoc_Lop, as:"LichHoc_Lop",
@@ -32,7 +30,6 @@ const getAll = async (req, res) => {
    const total = await db.LichHoc.findAll({ where: { ...filter },
     include: [
       { model: db.PhongHoc, as: "PhongHoc",
-       where: { ...filterPhonghOC } ,
       },
       {
         model: db.LichHoc_Lop, as:"LichHoc_Lop",
