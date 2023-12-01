@@ -9,11 +9,20 @@ const getAll = async (req, res) => {
   const { count, rows } = await db.PhongHoc.findAndCountAll({
     where: { ...filter },
     ...req.pagination,
+    include:[
+      {
+        model: db.TrangThietBi, as:"TrangThietBi"
+      }
+    ]
   });
+
+  const total = await db.PhongHoc.count({
+    where: { ...filter },
+  })
   return responseSuccessWithData({
     res,
     data: {
-      count: count,
+      count: total,
       data: rows,
     },
   });
