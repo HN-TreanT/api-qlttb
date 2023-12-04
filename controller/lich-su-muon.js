@@ -125,8 +125,11 @@ const edit = async (req, res) => {
       };
     });
   }
-  await db.LSM_TTB.destroy({ where: { Ma_LSM: LichSuMuon.Ma_LSM } });
-  await db.LSM_TTB.bulkCreate(new_lst_lsm_ttb);
+  await db.LSM_TTB.destroy({ where: { Ma_LSM: LichSuMuon.Ma_LSM } }); 
+  if ( new_lst_lsm_ttb.length > 0) {
+    await db.LSM_TTB.bulkCreate(new_lst_lsm_ttb);
+  }
+  
   return responseSuccessWithData({ res, data: LichSuMuon });
 };
 
