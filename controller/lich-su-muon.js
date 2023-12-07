@@ -6,6 +6,8 @@ const getAll = async (req, res) => {
 
   if (req.query.ten_nguoi_muon) filter.NguoiMuon = { [Op.substring]: req.query.ten_nguoi_muon };
   if (req.query.so_dien_thoai) filter.SoDienThoai = req.query.so_dien_thoai;
+  if (req.query.TrangThai) filter.TrangThai = req.query.TrangThai;
+
   if (req.query.Ma_CB) {
     filter.Ma_CB = req.query.Ma_CB;
   }
@@ -16,7 +18,10 @@ const getAll = async (req, res) => {
 
   const { count, rows } = await db.LichSuMuon.findAndCountAll({
     where: { ...filter },
-    ...req.pagination,
+    order: [
+      ["createdAt", "DESC"]
+    ],
+    ...req.pagination, 
     include: [
       { model: db.LichHoc, as: "LichHoc"  ,
     },
@@ -92,44 +97,16 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb, ChuThich, TrangThai } = req.body;
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich, TrangThai } = req.body;
   const lsm = await db.LichSuMuon.create({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich, TrangThai });
-  let lst_lsm_ttb = [];
-  if (lst_id_ttb) {
-    lst_lsm_ttb = lst_id_ttb.map((item) => {
-      return {
-        Ma_LSM: lsm.Ma_LSM,
-        Ma_TTB: item,
-        TrangThai: "Chưa trả",
-      };
-    });
-    await db.TrangThietBi.update({ TrangThai: 1 }, { where: { Ma_TTB: lst_id_ttb } });
-  }
-  await db.LSM_TTB.bulkCreate(lst_lsm_ttb);
-
   return responseSuccessWithData({ res, data: lsm });
 };
 
 const edit = async (req, res) => {
-  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, lst_id_ttb, ChuThich, TrangThai } = req.body;
+  const { NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich, TrangThai } = req.body;
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   await LichSuMuon.update({ NguoiMuon, SoDienThoai, Ma_CB, Ma_LH, ChuThich, TrangThai });
-  let new_lst_lsm_ttb = [];
-  if (lst_id_ttb) {
-    new_lst_lsm_ttb = lst_id_ttb.map((item) => {
-      return {
-        Ma_TTB: item,
-        Ma_LSM: LichSuMuon.Ma_LSM,
-        TrangThai: "Chưa trả",
-      };
-    });
-  }
-  await db.LSM_TTB.destroy({ where: { Ma_LSM: LichSuMuon.Ma_LSM } }); 
-  if ( new_lst_lsm_ttb.length > 0) {
-    await db.LSM_TTB.bulkCreate(new_lst_lsm_ttb);
-  }
-  
   return responseSuccessWithData({ res, data: LichSuMuon });
 };
 
@@ -141,10 +118,28 @@ const deleteById = async (req, res) => {
   return reponseSuccess({ res });
 };
 
+const traThietBi = async (req, res) => {
+  const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
+  if (!LichSuMuon) return responseInValid({ res, message: "not found" });
+  await LichSuMuon.update({TrangThai: 1})
+  // await db.LSM_TTB.update(req.body, { where: { Ma_LSM: LichSuMuon.Ma_LSM } })
+  if (req.body) {
+   req.body.forEach(async (item) => {
+      await db.LSM_TTB.update(item, {where: {Ma_LSM_TTB: item?.Ma_LSM_TTB}})
+      if(item?.Ma_TTB) {
+        await db.TrangThietBi.update({TrangThai: 0}, {where: {Ma_TTB: item?.Ma_TTB}})
+
+      }
+   });
+  }
+  return responseSuccessWithData({res, data: LichSuMuon})
+} 
+
 module.exports = {
   getAll,
   getById,
   create,
   edit,
   deleteById,
+  traThietBi
 };

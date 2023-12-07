@@ -7,5 +7,7 @@ Route.get("/:id",requireLogin, requireRole('A','U'), tryCatch(controller.getById
 Route.post("/",requireLogin, requireRole('A','U'), tryCatch(controller.create));
 Route.put("/:id",requireLogin, requireRole('A','U'), controller.edit);
 Route.delete("/:id",requireLogin, requireRole('A','U'), controller.deleteById);
+Route.put("/tra_thiet_bi/:id",requireLogin, requireRole('A','U'), controller.traThietBi);
+
 
 module.exports = Route;

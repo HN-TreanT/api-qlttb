@@ -7,6 +7,7 @@ const getAll = async (req, res) => {
   let order = [];
   if (req.query.Ten_TTB) filter.Ten_TTB = { [Op.substring]: req.query.Ten_TTB };
   if (req.query.Ma_Loai_TTB) filter.Ma_Loai_TTB = req.query.Ma_Loai_TTB;
+  if (req.query.TrangThai) filter.TrangThai = req.query.TrangThai
   if (req.query.order_ngaynhap) order = [...order, ["NgayNhap", `${req.query.order_ngaynhap}`]];
   if (req.query.Ma_PH) filterPh.Ma_PH = req.query.Ma_PH;
   const { rows, count } = await db.TrangThietBi.findAndCountAll({

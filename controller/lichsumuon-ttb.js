@@ -32,13 +32,18 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  const {Ma_TTB} = req.body
   const data = await db.LSM_TTB.create(req.body);
+  await db.TrangThietBi.update({TrangThai: 1}, {where: {Ma_TTB: Ma_TTB}})
   return responseSuccessWithData({ res, data: data });
 };
 
 const edit = async (req, res) => {
+  const {Ma_TTB} = req.body;
   const LSM_TTB = await db.LSM_TTB.findByPk(req.params.id);
   if (!LSM_TTB) return responseInValid({ res, message: "not found" });
+  await db.TrangThietBi.update({TrangThai: 0}, {where : {Ma_TTB: LSM_TTB?.Ma_TTB}})
+  await db.TrangThietBi.update({TrangThai: 1}, {where: {Ma_TTB: Ma_TTB}})
   await LSM_TTB.update(req.body);
   return reponseSuccess({ res });
 };
@@ -46,6 +51,7 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LSM_TTB = await db.LSM_TTB.findByPk(req.params.id);
   if (!LSM_TTB) return responseInValid({ res, message: "not found" });
+  await db.TrangThietBi.update({TrangThai: 0}, {where: {Ma_TTB: LSM_TTB.Ma_TTB}})
   await LSM_TTB.destroy();
   return reponseSuccess({ res });
 };
