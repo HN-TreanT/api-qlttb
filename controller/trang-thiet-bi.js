@@ -34,7 +34,7 @@ const  getTTB =  async (req, res) => {
 
    const ttb_phong_hocs = await db.TrangThietBi.findAll({
     where: {
-      Ma_PH: Ma_PH,
+     ...(Ma_PH && {Ma_PH: Ma_PH}),
       TrangThai: 0
     }
    })

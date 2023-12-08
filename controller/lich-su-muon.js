@@ -41,18 +41,21 @@ const getAll = async (req, res) => {
       },
     ],
   });
-  const total = await db.LichSuMuon.findAll({
-    where: { ...filter },
-    ...req.pagination,
-    include: [
-      { model: db.LichHoc, as: "LichHoc"  ,
-    },
-      {
-        model: db.CanBo,
-        as: "CanBo",
-      },
-    ],
-  });
+  const total = await db.LichSuMuon.count({
+    where : {...filter}
+  })
+  // const total = await db.LichSuMuon.findAll({
+  //   where: { ...filter },
+  //   ...req.pagination,
+  //   include: [
+  //     { model: db.LichHoc, as: "LichHoc"  ,
+  //   },
+  //     {
+  //       model: db.CanBo,
+  //       as: "CanBo",
+  //     },
+  //   ],
+  // });
   // const newRows = rows.map(async (item) => {
   //   const lsm_ttbs = await db.LSM_TTB.findAll({where: {Ma_LSM : item.Ma_LSM}, 
   //     include: [
@@ -69,7 +72,7 @@ const getAll = async (req, res) => {
     
   // })
   // console.log(newRows)
-  return responseSuccessWithData({ res, data: { count: total.length, data: rows } });
+  return responseSuccessWithData({ res, data: { count: total, data: rows } });
 };
 
 const getById = async (req, res) => {
@@ -113,7 +116,15 @@ const edit = async (req, res) => {
 const deleteById = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
-  await db.LSM_TTB.destroy({where: {Ma_LSM : LichSuMuon.Ma_LSM}})
+  const list_lsm_ttb = await db.LSM_TTB.findAll({where: {Ma_LSM: LichSuMuon.Ma_LSM}})
+  // await db.LSM_TTB.destroy({where: {Ma_LSM : LichSuMuon.Ma_LSM}})
+  list_lsm_ttb.map(async (item) => {
+    await db.LSM_TTB.destroy({where: {Ma_LSM_TTB: item.Ma_LSM_TTB}})
+    if(item?.Ma_TTB) {
+      await db.TrangThietBi.update({TrangThai: 0}, {where: {Ma_TTB: item?.Ma_TTB}})
+
+    }
+  })
   await LichSuMuon.destroy();
   return reponseSuccess({ res });
 };
