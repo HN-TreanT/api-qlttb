@@ -28,6 +28,71 @@ const getAll = async (req, res) => {
   });
 };
 
+const  getTTB =  async (req, res) => {
+   const {Ma_PH, Ma_Loai_TTB} = req.query
+   const {limit, offset} = req.pagination
+
+   const ttb_phong_hocs = await db.TrangThietBi.findAll({
+    where: {
+      Ma_PH: Ma_PH,
+      TrangThai: 0
+    }
+   })
+
+   //kiểm tra xem ma loại trang thiết bị tìm kiếm trả về có trong trang thiết bị gắn với phòng học hay không
+  
+   const check  = ttb_phong_hocs.filter((item) => parseInt(item?.Ma_Loai_TTB) === parseInt(Ma_Loai_TTB))
+  if (check.length > 0) {
+      return responseSuccessWithData({
+        res, 
+        data: {
+          count: check.length,
+          data: check
+        }
+      })
+  }
+   const id_Loai_ttb_phonghoc = ttb_phong_hocs.map((item) => {
+    return item.Ma_Loai_TTB
+   })
+   const pagination2 = {
+    limit: limit - ttb_phong_hocs.length,
+    offset: offset
+   }
+   if (Ma_Loai_TTB) {
+      const {count, rows} = await db.TrangThietBi.findAndCountAll({
+        where : {
+          Ma_Loai_TTB: Ma_Loai_TTB,
+           TrangThai: 0
+        },
+        ...req.pagination,
+      })
+      return responseSuccessWithData({
+        res, 
+        data: {
+          count: count,
+          data: rows
+        }
+      })
+   }
+   const ttbs = await db.TrangThietBi.findAll({
+    where : {
+       Ma_Loai_TTB: {[Op.notIn]: id_Loai_ttb_phonghoc},
+       Ma_PH: null,
+       TrangThai: 0
+ 
+    },
+    ...pagination2   
+   })
+   const dataResponse = [...ttbs, ...ttb_phong_hocs]
+  return responseSuccessWithData({
+    res, 
+    data: {
+      count: dataResponse.length,
+      data: dataResponse
+    }
+  })
+}
+
 const getById = async (req, res) => {
   const TrangThietBi = await db.TrangThietBi.findByPk(req.params.id);
   if (!TrangThietBi) return responseInValid({ res, message: "not found" });
@@ -62,4 +127,5 @@ module.exports = {
   create,
   edit,
   deleteById,
+  getTTB
 };
