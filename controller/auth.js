@@ -25,7 +25,7 @@ const login = async (req, res) => {
   if (!user) return responseInValid({ res, message: "Tài khoản không tồn tại" });
   let check = await bcrypt.compareSync(password, user.MatKhau);
   if (!check) return responseInValid({ res, message: " Mật khẩu không chính xác" });
-  const access_token = security.generateToken({ username: user.TaiKhoan, role_id: user.role_id }, "1h");
+  const access_token = security.generateToken({ username: user.TaiKhoan, role_id: user.role_id }, "300s");
   const refresh_token = security.generateRFToken({ username: user.TaiKhoan, role_id: user.role_id }, "300d");
   await user.update({ refresh_token: refresh_token });
   return responseSuccessWithData({ res, data: { ...user.dataValues, access_token: access_token } });
@@ -63,7 +63,8 @@ const change_password = async (req, res) => {
 
 const refresh = async (req,res) => {
   const data = security.verifyRFToken(req.body.refresh_token)
-  const access_token = security.generateToken(data, '300s');
+  const access_token = security.generateToken(data.user, '300s');
+  console.log(access_token)
   return responseSuccessWithData({res, data: {
     access_token: access_token
   }})

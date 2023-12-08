@@ -8,12 +8,12 @@ let sequelize = new Sequelize(database.database, database.username, database.pas
   port: database.port,
   dialect: database.dialect,
   operatorsAliases: 0,
-  pool: {
-    max: database.pool.max,
-    min: database.pool.min,
-    acquire: database.pool.acquire,
-    idle: database.pool.idle,
-  },
+  // pool: {
+  //   max: database.pool.max,
+  //   min: database.pool.min,
+  //   acquire: database.pool.acquire,
+  //   idle: database.pool.idle,
+  // },
   dialectOptions: {
     // useUTC: false, // for reading from database
     dateStrings: true,
