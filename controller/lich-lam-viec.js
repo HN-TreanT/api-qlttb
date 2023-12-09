@@ -1,9 +1,11 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
+const {Op} = require("sequelize")
 const getAll = async (req, res) => {
   let filter = {};
   let order = [];
   if (req.query.Ma_CB) filter.Ma_CB = req.query.Ma_CB;
+  if(req.query.search) filter.CongViec = {[Op.substring]: req.query.search}
   if (req.query.order_ngay) order = [...order, ["Ngay", `${req.query.order_ngay}`]];
   const { count, rows } = await db.LichLamViec.findAndCountAll({
     where: { ...filter },

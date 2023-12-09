@@ -7,6 +7,7 @@ const getAll = async (req, res) => {
   if (req.query.ten_nguoi_muon) filter.NguoiMuon = { [Op.substring]: req.query.ten_nguoi_muon };
   if (req.query.so_dien_thoai) filter.SoDienThoai = req.query.so_dien_thoai;
   if (req.query.TrangThai) filter.TrangThai = req.query.TrangThai;
+  if(req.query.batdau && req.query.ketthuc) filter.createdAt = {[Op.between] : [req.query.batdau, req.query.ketthuc]}
 
   if (req.query.Ma_CB) {
     filter.Ma_CB = req.query.Ma_CB;
@@ -138,7 +139,11 @@ const traThietBi = async (req, res) => {
    req.body.forEach(async (item) => {
       await db.LSM_TTB.update(item, {where: {Ma_LSM_TTB: item?.Ma_LSM_TTB}})
       if(item?.Ma_TTB) {
-        await db.TrangThietBi.update({TrangThai: 0}, {where: {Ma_TTB: item?.Ma_TTB}})
+         if (item?.Hong) {
+          await db.TrangThietBi.update({TrangThai: 3}, {where: {Ma_TTB: item?.Ma_TTB}})
+         } else {
+          await db.TrangThietBi.update({TrangThai: 3}, {where: {Ma_TTB: item?.Ma_TTB}})
+         }
 
       }
    });

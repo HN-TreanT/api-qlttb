@@ -7,6 +7,23 @@ const multipleUploads = upload.fields([
   { name: "image", maxCount: 10 },
 ]);
 
+const uploadFileExcel = upload.single("file")
+
+const checkFileExcel = (req, res, next) => {
+  const file = req.file
+  
+  if (file) {
+    const addTail = file.destination.concat("", file.originalname);
+    fs.rename(file.path, addTail, (err) => {
+      if (err) next(err);
+      console.log("Uploaded field successfully!");
+    });
+    req.url = addTail
+   
+  }
+  next()
+}
+
 const checkMultipleFile = (req, res, next) => {
   const files = req.files;
   const fields = ["file", "image"];
@@ -39,4 +56,6 @@ const checkMultipleFile = (req, res, next) => {
 module.exports = {
   multipleUploads,
   checkMultipleFile,
+  uploadFileExcel,
+  checkFileExcel
 };

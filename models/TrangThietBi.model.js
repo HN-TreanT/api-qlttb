@@ -40,7 +40,7 @@ const TrangThietBi = sequelize.define(
       allowNull: true,
     },
     TrangThai: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
     },
   },
