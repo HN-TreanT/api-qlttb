@@ -35,7 +35,8 @@ const  getTTB =  async (req, res) => {
    const ttb_phong_hocs = await db.TrangThietBi.findAll({
     where: {
      ...(Ma_PH && {Ma_PH: Ma_PH}),
-      TrangThai: 0
+     ...{[Op.or] : [{TrangThai: 0}, {TrangThai: 3}]}
+      // TrangThai: 0
     }
    })
 
@@ -62,7 +63,9 @@ const  getTTB =  async (req, res) => {
       const {count, rows} = await db.TrangThietBi.findAndCountAll({
         where : {
           Ma_Loai_TTB: Ma_Loai_TTB,
-           TrangThai: 0
+          //  TrangThai: 0
+     ...{[Op.or] : [{TrangThai: 0}, {TrangThai: 3}]}
+
         },
         ...req.pagination,
       })
@@ -78,7 +81,9 @@ const  getTTB =  async (req, res) => {
     where : {
        Ma_Loai_TTB: {[Op.notIn]: id_Loai_ttb_phonghoc},
        Ma_PH: null,
-       TrangThai: 0
+      //  TrangThai: 0
+     ...{[Op.or] : [{TrangThai: 0}, {TrangThai: 3}]}
+
  
     },
     ...pagination2   
