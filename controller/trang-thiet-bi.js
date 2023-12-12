@@ -35,13 +35,13 @@ const  getTTB =  async (req, res) => {
    const ttb_phong_hocs = await db.TrangThietBi.findAll({
     where: {
      ...(Ma_PH && {Ma_PH: Ma_PH}),
-     ...{[Op.or] : [{TrangThai: 0}, {TrangThai: 3}]}
+    //  ...{[Op.or] : [{TrangThai: 0}, {TrangThai: 3}]}
       // TrangThai: 0
     }
    })
 
    //kiểm tra xem ma loại trang thiết bị tìm kiếm trả về có trong trang thiết bị gắn với phòng học hay không
-  
+  const ttb_phong_hocs_pass = ttb_phong_hocs.filter((item) => item.TrangThai === 1)
    const check  = ttb_phong_hocs.filter((item) => parseInt(item?.Ma_Loai_TTB) === parseInt(Ma_Loai_TTB))
   if (check.length > 0) {
       return responseSuccessWithData({
@@ -52,11 +52,11 @@ const  getTTB =  async (req, res) => {
         }
       })
   }
-   const id_Loai_ttb_phonghoc = ttb_phong_hocs.map((item) => {
+   const id_Loai_ttb_phonghoc = ttb_phong_hocs_pass.map((item) => {
     return item.Ma_Loai_TTB
    })
    const pagination2 = {
-    limit: limit - ttb_phong_hocs.length,
+    limit: limit - ttb_phong_hocs_pass.length,
     offset: offset
    }
    if (Ma_Loai_TTB) {
@@ -88,7 +88,7 @@ const  getTTB =  async (req, res) => {
     },
     ...pagination2   
    })
-   const dataResponse = [...ttbs, ...ttb_phong_hocs]
+   const dataResponse = [...ttbs, ...ttb_phong_hocs_pass]
   return responseSuccessWithData({
     res, 
     data: {

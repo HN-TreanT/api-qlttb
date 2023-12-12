@@ -26,6 +26,8 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  const lop = await db.Lop.findOne({where: {Code: req.body?.Code}})
+  if(lop) return responseInValid({res, message:"Lớp đã tồn tại"})
   const data = await db.Lop.create(req.body);
   return responseSuccessWithData({ res, data: data });
 };

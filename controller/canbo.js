@@ -1,6 +1,8 @@
 const db = require("../models/init-models");
 const { reponseSuccess, responseSuccessWithData, responseInValid } = require("../helper/ResponseRequests");
 const { Op } = require("sequelize");
+const bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
 const getAll = async (req, res) => {
   let filter = {};
   let order = [];
@@ -37,6 +39,10 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  if (req.body.MatKhau) {
+    const hashPassword = await bcrypt.hashSync(req.body.MatKhau, salt);
+    req.body.MatKhau = hashPassword;
+  }
   await db.CanBo.create(req.body);
   return reponseSuccess({ res });
 };

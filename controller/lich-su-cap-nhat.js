@@ -50,6 +50,7 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
+  console.log(req.body)
   const LichSuCapNhat = await db.LichSuCapNhat.findByPk(req.params.id);
   if (!LichSuCapNhat) return responseInValid({ res, message: "not found" });
   await LichSuCapNhat.update(req.body);
@@ -84,7 +85,7 @@ const importExcel =async (req, res) => {
     const dataLSCN = {
       Ma_CB : Ma_CB,
       createdAt:  moment(NgayCapNhat, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      LoaiCapNhat: LoaiCapNhat
+      LoaiCapNhat: LoaiCapNhat === "Thay mới" ? "thaymoi" : "suachua"
     }
 
     let lscn_ttb = []

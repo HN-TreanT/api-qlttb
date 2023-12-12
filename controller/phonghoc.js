@@ -35,6 +35,8 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  const phonghoc = await db.PhongHoc.findOne({where: {TenPhong: req.body?.TenPhong}})
+  if (phonghoc) return responseInValid({res, message:"Phòng đã tồn tại"})
   const data = await db.PhongHoc.create(req.body);
   return responseSuccessWithData({ res, data: data });
 };

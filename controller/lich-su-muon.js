@@ -134,15 +134,18 @@ const traThietBi = async (req, res) => {
   const LichSuMuon = await db.LichSuMuon.findByPk(req.params.id);
   if (!LichSuMuon) return responseInValid({ res, message: "not found" });
   await LichSuMuon.update({TrangThai: 1})
-  // await db.LSM_TTB.update(req.body, { where: { Ma_LSM: LichSuMuon.Ma_LSM } })
+  await db.LSM_TTB.update(req.body, { where: { Ma_LSM: LichSuMuon.Ma_LSM } })
   if (req.body) {
    req.body.forEach(async (item) => {
-      await db.LSM_TTB.update(item, {where: {Ma_LSM_TTB: item?.Ma_LSM_TTB}})
+      await db.LSM_TTB.update({
+        ...item,
+        TrangThai: "Đã trả"
+      }, {where: {Ma_LSM_TTB: item?.Ma_LSM_TTB}})
       if(item?.Ma_TTB) {
          if (item?.Hong) {
           await db.TrangThietBi.update({TrangThai: 3}, {where: {Ma_TTB: item?.Ma_TTB}})
          } else {
-          await db.TrangThietBi.update({TrangThai: 3}, {where: {Ma_TTB: item?.Ma_TTB}})
+          await db.TrangThietBi.update({TrangThai: 0}, {where: {Ma_TTB: item?.Ma_TTB}})
          }
 
       }
