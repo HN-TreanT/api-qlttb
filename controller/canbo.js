@@ -10,6 +10,7 @@ const getAll = async (req, res) => {
   if (req.query.SoDienThoai) filter.SoDienThoai = req.query.SoDienThoai;
   if (req.query.order_name) order = [...order, ["Ten_CB", `${req.query.order_name}`]];
   if (req.query.order_createdAt) order = [...order, ["createdAt", `${req.query.order_createdAt}`]];
+  if (req.query.role) filter.role_id = req.query.role
 
   const { count, rows } = await db.CanBo.findAndCountAll({
     where: {
