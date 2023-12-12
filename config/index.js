@@ -4,16 +4,16 @@ const config = {
     port: 8080,
   },
   database: {
-    username: "admin",
-    password: "hnam23012002",
-    database: "qlttb",
-    port: 3306, // thay đổi port kết nối tới MySQL từ 8080 thành 3307
-    host: "localhost",
-    // username: process.env.MYSQL_USERNAME,
-    // password: process.env.MYSQL_PASSWORD,
-    // database: process.env.MYSQL_DATABASE,
-    // port: process.env.MYSQL_PORT, // thay đổi port kết nối tới MySQL từ 8080 thành 3307
-    // host: process.env.MYSQL_HOST,
+    // username: "admin",
+    // password: "hnam23012002",
+    // database: "qlttb",
+    // port: 3306, // thay đổi port kết nối tới MySQL từ 8080 thành 3307
+    // host: "localhost",
+    username: process.env.MYSQL_USERNAME,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: process.env.MYSQL_PORT, // thay đổi port kết nối tới MySQL từ 8080 thành 3307
+    host: process.env.MYSQL_HOST,
 
     dialect: "mysql",
     pool: {
